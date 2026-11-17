@@ -71,6 +71,27 @@ THEME
   fi
 fi
 
+# ------------------------------------------------ password reminder banner ---
+if [[ -n "$NEW_USER" ]] && id "$NEW_USER" &>/dev/null; then
+  USER_HOME=$(getent passwd "$NEW_USER" | cut -d: -f6)
+  RC_NAME=".zshrc"
+  [[ -f "$USER_HOME/$RC_NAME" ]] || RC_NAME=".bashrc"
+
+  if [[ -f "$USER_HOME/$RC_NAME" ]] && ! grep -q '### password reminder' "$USER_HOME/$RC_NAME"; then
+    echo "Installing password reminder in ~$NEW_USER/$RC_NAME"
+    cat >> "$USER_HOME/$RC_NAME" <<BANNER
+
+### password reminder - delete this block once you have run 'passwd'
+echo ""
+echo ">>> NOTE: no password set yet - run 'passwd' to set one (needed for sudo)."
+echo ">>> This reminder lives in ~/$RC_NAME."
+echo ">>> To remove it: open that file and delete the lines between"
+echo ">>> the two 'password reminder' marker lines (inclusive)."
+### end password reminder
+BANNER
+  fi
+fi
+
 # ------------------------------------------------------------------ lsd ---
 if LSD_VERSION=$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/lsd-rs/lsd/releases/latest 2>/dev/null); then
   LSD_VERSION=${LSD_VERSION#v} # deb assets are named without the 'v' prefix, e.g. lsd_1.2.0_amd64.deb

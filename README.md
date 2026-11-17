@@ -23,11 +23,12 @@ TIMEZONE="Europe/Berlin"
 - fail2ban + unattended security upgrades
 - Timezone
 - NTP time sync (chrony installed only if the clock isn't already synchronized)
+- A "run `passwd`" reminder banner appended to the new user's `~/.zshrc` (falls back to `~/.bashrc`) — remove it manually after setting your password (instructions are printed in the banner itself)
 
 ## Notes
 
 - Fully non-interactive (safe to run from a VPS provider's init/cloud-init script): the user is created with `--disabled-password`, so the script never asks for a password.
-- After the first SSH login, run `passwd` to set your own password — sudo requires it. Until then, `sudo` will prompt for a password that doesn't exist yet.
+- After the first SSH login, run `passwd` to set your own password — sudo requires it. Until then, `sudo` will prompt for a password that doesn't exist yet. The login banner reminds you of this until you remove it.
 - If the SSH key URL is unreachable, the script warns and leaves password authentication enabled instead of risking a lockout.
 - The oh-my-zsh installer runs as `$NEW_USER`; the default shell is set to zsh with `chsh`.
 - If `$NEW_USER` already exists, the script only ensures keys/zsh/oh-my-zsh are in place — it skips `adduser`.
