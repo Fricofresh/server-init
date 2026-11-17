@@ -17,8 +17,7 @@ TIMEZONE="Europe/Berlin"
 ## What it sets up
 
 - System update + base packages (curl, git, vim, htop, zsh, …)
-- Sudo user with SSH key auth
-- SSH hardening (`sshd_config.d/99-init-hardening.conf`, root login disabled, backup at `sshd_config.bak`)
+- Sudo user with SSH key auth (no password set — run `passwd` after your first login; sudo needs it)
 - **zsh + oh-my-zsh** with the custom `fricofresh` theme (`┌─[user@host]─[path]─[exit code]` two-line prompt)
 - **lsd**, registered via `update-alternatives` so plain `ls` runs lsd (GNU `ls` kept as fallback at priority 40 — `update-alternatives --config ls` to switch back)
 - fail2ban + unattended security upgrades
@@ -27,6 +26,10 @@ TIMEZONE="Europe/Berlin"
 
 ## Notes
 
+- Fully non-interactive (safe to run from a VPS provider's init/cloud-init script): the user is created with `--disabled-password`, so the script never asks for a password.
+- After the first SSH login, run `passwd` to set your own password — sudo requires it. Until then, `sudo` will prompt for a password that doesn't exist yet.
+- If the SSH key URL is unreachable, the script warns and leaves password authentication enabled instead of risking a lockout.
 - The oh-my-zsh installer runs as `$NEW_USER`; the default shell is set to zsh with `chsh`.
 - If `$NEW_USER` already exists, the script only ensures keys/zsh/oh-my-zsh are in place — it skips `adduser`.
-- Reboot recommended after first run.
+- `set -euo pipefail` is on: any failing step aborts the script with a clear exit code.
+- Reboot recommended after first run. Keep your provider's console/recovery access as a safety net for the first login.
