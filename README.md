@@ -8,7 +8,7 @@ sudo bash init.sh
 
 Licensed under the [MIT License](LICENSE).
 
-User, SSH key URL and timezone are configured at the top of the script:
+User, SSH key URL and timezone are configured at the top of the script you might want to change it:
 
 ```bash
 NEW_USER="fricofresh"
@@ -20,7 +20,7 @@ TIMEZONE="Europe/Berlin"
 
 - System update + base packages (curl, git, vim, htop, zsh, …)
 - Sudo user with SSH key auth (no password set — run `passwd` after your first login; sudo needs it)
-- **zsh + oh-my-zsh** with the custom `fricofresh` theme (`┌─[user@host]─[path]─[exit code]` two-line prompt)
+- **zsh + oh-my-zsh** with the custom theme (`┌─[user@host]─[path]─[exit code]` two-line prompt)
 - **lsd**, registered via `update-alternatives` so plain `ls` runs lsd (GNU `ls` kept as fallback at priority 40 — `update-alternatives --config ls` to switch back)
 - fail2ban + unattended security upgrades
 - Timezone
