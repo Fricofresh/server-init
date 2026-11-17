@@ -6,6 +6,8 @@ Bootstrap script for new Debian/Ubuntu servers. Run it as root right after first
 sudo bash init.sh
 ```
 
+Licensed under the [MIT License](LICENSE).
+
 User, SSH key URL and timezone are configured at the top of the script:
 
 ```bash
